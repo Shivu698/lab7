@@ -1,0 +1,27 @@
+import java.net.*;
+import java.util.*;
+public class DatagramSocketServer {
+    public static void main(String[] args)throws Exception
+    {
+        Scanner in=new Scanner(System.in);
+        DatagramSocket serversocket=new DatagramSocket(9000);
+        byte[] recievedata=new byte[1024];
+        byte[] senddata=new byte[1024];
+        System.out.println("****server side****");
+        DatagramPacket receivepacket=new DatagramPacket(recievedata,recievedata.length);
+        serversocket.receive(receivepacket);
+        System.out.println(new String(receivepacket.getData()));
+        InetAddress IPAddress=receivepacket.getAddress();
+        int port=receivepacket.getPort();
+        while(true)
+        {
+            System.out.println("type some message to display at clientend");
+            String message=in.nextLine();
+            senddata=message.getBytes();
+            System.out.println("message sent from the server:"+new String(senddata));
+            DatagramPacket sendpacket=new DatagramPacket(senddata,senddata.length,IPAddress,port);
+            serversocket.send(sendpacket);
+        }
+                
+    }
+}
